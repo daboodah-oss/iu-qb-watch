@@ -1,267 +1,172 @@
-<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <meta name="color-scheme" content="light dark" />
-  <link rel="icon" href="data:," />
-  <title>Hoover vs Mendoza — Through Four Games</title>
-  <style>
-    :root {
-      color-scheme: light dark;
-      --paper:#f5f3ee; --ink:#161616; --muted:#65635e; --line:#d7d2c8;
-      --surface:#ffffff; --surface-2:#ebe7de; --iu:#990000; --iu-soft:#f0dede;
-      --mendoza:#176b8f; --mendoza-soft:#dceaf0; --gold:#b28b28; --green:#287351;
-      --shadow:0 12px 40px rgba(28,24,18,.08);
-    }
-    @media (prefers-color-scheme:dark){
-      :root{--paper:#111211;--ink:#f3f0e9;--muted:#aaa79f;--line:#353631;--surface:#1b1c1a;--surface-2:#262723;--iu:#f05b65;--iu-soft:#3b2326;--mendoza:#65b7dc;--mendoza-soft:#17323d;--gold:#d4af4d;--green:#62b68e;--shadow:0 12px 40px rgba(0,0,0,.25)}
-    }
-    *{box-sizing:border-box}
-    html{scroll-behavior:smooth}
-    body{margin:0;background:var(--paper);color:var(--ink);font-family:"Aptos","Segoe UI",system-ui,sans-serif;line-height:1.5}
-    a{color:inherit;text-decoration-color:var(--iu);text-underline-offset:3px}
-    button{font:inherit}
-    .page{width:min(1180px,100%);margin:auto;padding:22px clamp(18px,4vw,54px) 64px}
-    .mast{padding:clamp(28px,6vw,74px) 0 30px;border-bottom:1px solid var(--line);display:grid;grid-template-columns:minmax(0,1fr) minmax(260px,380px);gap:44px;align-items:end}
-    .dateline{font-size:.8rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--iu);margin:0 0 12px}
-    h1,h2,h3,p{margin-top:0}
-    h1{font-family:Georgia,"Times New Roman",serif;font-size:clamp(2.55rem,6.8vw,5.4rem);line-height:.94;letter-spacing:-.045em;margin-bottom:22px;max-width:840px}
-    .dek{font-family:Georgia,"Times New Roman",serif;font-size:clamp(1.12rem,2.1vw,1.45rem);line-height:1.42;max-width:760px;color:var(--muted);margin:0}
-    .scoreboard{border-top:5px solid var(--iu);background:var(--surface);padding:22px 22px 18px;box-shadow:var(--shadow)}
-    .scoreboard .label{font-size:.73rem;text-transform:uppercase;letter-spacing:.09em;font-weight:800;color:var(--muted)}
-    .score{display:flex;align-items:baseline;justify-content:space-between;gap:16px;margin:8px 0 2px}
-    .score b{font-family:Georgia,serif;font-size:2.65rem;line-height:1}
-    .score span{font-size:.95rem;font-weight:700}
-    .record{font-size:.88rem;color:var(--muted);border-top:1px solid var(--line);padding-top:12px;margin-top:12px}
-    .jump{display:flex;gap:4px;flex-wrap:wrap;padding:16px 0 8px;position:sticky;top:0;z-index:10;background:color-mix(in srgb,var(--paper) 94%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
-    .jump a{text-decoration:none;font-size:.78rem;font-weight:800;padding:8px 10px;border-bottom:2px solid transparent;color:var(--muted)}
-    .jump a:hover,.jump a:focus-visible{color:var(--ink);border-color:var(--iu);outline:none}
-    section{padding:48px 0;border-bottom:1px solid var(--line)}
-    .section-head{display:grid;grid-template-columns:minmax(220px,.72fr) minmax(0,1fr);gap:40px;margin-bottom:26px;align-items:start}
-    .kicker{font-size:.73rem;font-weight:850;letter-spacing:.09em;text-transform:uppercase;color:var(--iu);margin-bottom:9px}
-    h2{font-family:Georgia,"Times New Roman",serif;font-size:clamp(2rem,4vw,3.35rem);line-height:1.05;letter-spacing:-.035em;margin-bottom:0}
-    .section-copy{font-size:1.02rem;color:var(--muted);max-width:700px;margin:4px 0 0}
-    .verdict{display:grid;grid-template-columns:1.12fr .88fr;gap:18px;margin-bottom:26px}
-    .callout{background:var(--ink);color:var(--paper);padding:clamp(22px,3.4vw,36px)}
-    .callout strong{display:block;font-family:Georgia,serif;font-size:clamp(1.45rem,3vw,2.15rem);line-height:1.17;margin-bottom:10px}
-    .callout p{color:color-mix(in srgb,var(--paper) 78%,transparent);margin:0}
-    .game-note{background:var(--surface);padding:24px;border-top:5px solid var(--gold);box-shadow:var(--shadow)}
-    .game-note .big{font-family:Georgia,serif;font-size:1.75rem;font-weight:700;margin-bottom:7px}
-    .game-note p{margin:0;color:var(--muted)}
-    .stats{display:grid;grid-template-columns:repeat(5,1fr);gap:1px;background:var(--line);border:1px solid var(--line)}
-    .stat{background:var(--surface);padding:20px 16px;min-height:150px;display:flex;flex-direction:column;justify-content:space-between}
-    .stat h3{font-size:.76rem;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);margin-bottom:20px}
-    .pair{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-    .pair b{display:block;font:700 1.46rem/1 Georgia,serif;font-variant-numeric:tabular-nums}
-    .pair small{display:block;font-size:.69rem;color:var(--muted);margin-top:5px}
-    .hoover-val{color:var(--iu)} .mendoza-val{color:var(--mendoza)}
-    .bar-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:18px}
-    .bar-card{background:var(--surface);padding:19px 18px;border-top:3px solid var(--line)}
-    .bar-title{display:flex;justify-content:space-between;gap:12px;font-weight:800;font-size:.88rem;margin-bottom:14px}
-    .bar-title span:last-child{font-weight:600;color:var(--muted);font-variant-numeric:tabular-nums}
-    .bar-row{display:grid;grid-template-columns:82px minmax(0,1fr) 48px;align-items:center;gap:9px;margin:8px 0;font-size:.75rem}
-    .track{height:10px;background:var(--surface-2)}
-    .fill{height:100%;min-width:2px}.fill.m{background:var(--mendoza)}.fill.h{background:var(--iu)}
-    .num{text-align:right;font-weight:800;font-variant-numeric:tabular-nums}
-    .legend{display:flex;gap:18px;flex-wrap:wrap;font-size:.78rem;font-weight:700;color:var(--muted);margin:10px 0 18px}
-    .legend i{display:inline-block;width:18px;height:3px;vertical-align:middle;margin-right:7px;background:currentColor}
-    .legend .h{color:var(--iu)}.legend .m{color:var(--mendoza)}
-    .controls{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 14px}
-    .controls button{border:1px solid var(--line);background:transparent;color:var(--muted);padding:8px 11px;cursor:pointer;font-size:.78rem;font-weight:800}
-    .controls button[aria-pressed="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
-    .chart-shell{background:var(--surface);padding:16px 14px 8px;box-shadow:var(--shadow)}
-    .chart-title-row{display:flex;justify-content:space-between;align-items:baseline;gap:16px;padding:2px 8px 8px}
-    .chart-title-row h3{font-size:1rem;margin:0}.chart-title-row span{font-size:.75rem;color:var(--muted)}
-    svg.chart{width:100%;height:auto;display:block;overflow:visible}
-    .gridline{stroke:var(--line);stroke-width:1}.axistext{fill:var(--muted);font-size:11px}.labeltext{fill:var(--ink);font-size:11px;font-weight:750}.series-m{stroke:var(--mendoza)}.series-h{stroke:var(--iu)}circle.series-m{fill:var(--mendoza)}circle.series-h{fill:var(--iu)}
-    .logs{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:24px}
-    .log{background:var(--surface);padding:22px}
-    .log h3{font-family:Georgia,serif;font-size:1.35rem;margin-bottom:14px;color:var(--mendoza)}
-    .log.hoover h3{color:var(--iu)}
-    .game{display:grid;grid-template-columns:minmax(105px,1fr) auto;gap:10px;padding:12px 0;border-top:1px solid var(--line)}
-    .game:first-of-type{border-top:0}.opp{font-weight:800}.result{font-size:.73rem;color:var(--green);font-weight:800}.line{font-variant-numeric:tabular-nums;text-align:right;font-size:.82rem}.rush{display:block;color:var(--muted);font-size:.7rem;margin-top:3px}
-    .total{display:flex;justify-content:space-between;gap:12px;border-top:2px solid var(--ink);padding-top:14px;margin-top:8px;font-weight:800;font-size:.82rem}
-    .rank-layout{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(260px,.6fr);gap:18px}
-    .rank-card{background:var(--surface);padding:16px 14px 8px;box-shadow:var(--shadow)}
-    .rank-note{background:var(--surface-2);padding:22px}.rank-note strong{display:block;font-family:Georgia,serif;font-size:1.42rem;line-height:1.2;margin-bottom:10px}.rank-note p{font-size:.86rem;color:var(--muted);margin:0}
-    .boards{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}
-    .board{background:var(--surface);padding:15px 14px}
-    .board h3{font-size:.75rem;text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px}
-    .leader{display:grid;grid-template-columns:24px minmax(0,1fr) auto;gap:6px;padding:7px 0;border-top:1px solid var(--line);font-size:.72rem;align-items:baseline}
-    .leader:first-of-type{border-top:0}.leader .rank{color:var(--muted)}.leader .val{font-weight:800;font-variant-numeric:tabular-nums}.leader.hoover{color:var(--iu);font-weight:800}
-    .odds-wrap{display:grid;grid-template-columns:1fr .65fr;gap:18px}
-    .odds{background:var(--surface);padding:10px 18px}
-    .odds-head,.odds-row{display:grid;grid-template-columns:minmax(150px,1.4fr) repeat(3,.7fr);gap:10px;align-items:center}
-    .odds-head{font-size:.68rem;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);font-weight:800;padding:9px 0}
-    .odds-row{border-top:1px solid var(--line);padding:10px 0;font-size:.8rem}.odds-row div:not(:first-child),.odds-head div:not(:first-child){text-align:right;font-variant-numeric:tabular-nums}.odds-row.hoover{color:var(--iu);font-weight:900;background:var(--iu-soft);margin:0 -18px;padding-left:18px;padding-right:18px}
-    .market-note{background:var(--surface);border-top:5px solid var(--iu);padding:24px}.market-note b{font:700 2rem/1 Georgia,serif;color:var(--iu);display:block;margin-bottom:8px}.market-note p{font-size:.87rem;color:var(--muted);margin:0}
-    .fine{font-size:.78rem;color:var(--muted);line-height:1.6}.fine strong{color:var(--ink)}
-    .sources{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px 24px;margin-top:18px}.sources a{font-size:.78rem;padding:8px 0;border-top:1px solid var(--line)}
-    footer{padding-top:28px;color:var(--muted);font-size:.75rem}
-    @media(max-width:900px){.mast,.section-head,.verdict,.rank-layout,.odds-wrap{grid-template-columns:1fr}.stats{grid-template-columns:repeat(2,1fr)}.stat:last-child{grid-column:1/-1}.boards{grid-template-columns:repeat(2,1fr)}.boards .board:last-child{grid-column:1/-1}.mast{gap:26px}.scoreboard{max-width:460px}.section-head{gap:14px}.rank-note{order:-1}}
-    @media(max-width:640px){.page{padding:12px 14px 44px}.mast{padding:28px 0 24px}.jump{margin:0 -14px;padding-left:10px;padding-right:10px}.jump a{padding:8px 7px;font-size:.71rem}section{padding:38px 0}.bar-grid,.logs,.boards{grid-template-columns:1fr}.boards .board:last-child,.stat:last-child{grid-column:auto}.stats{grid-template-columns:1fr 1fr}.stat{min-height:130px;padding:16px 13px}.pair b{font-size:1.2rem}.bar-row{grid-template-columns:72px minmax(0,1fr) 44px}.chart-shell,.rank-card{margin-left:-8px;margin-right:-8px;padding-left:7px;padding-right:7px}.axistext,.labeltext{font-size:9.5px}.odds{padding:8px 12px}.odds-head,.odds-row{grid-template-columns:minmax(112px,1.35fr) repeat(3,.72fr);gap:5px;font-size:.7rem}.odds-row.hoover{margin:0 -12px;padding-left:12px;padding-right:12px}.sources{grid-template-columns:1fr}}
-    @media print{.jump{display:none}.page{width:100%;padding:0 20px}.chart-shell,.rank-card,.scoreboard{box-shadow:none}section{break-inside:avoid}.source-section{break-before:page}}
-    @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
-  </style>
-</head>
-<body>
-<main class="page">
-  <header class="mast">
-    <div>
-      <p class="dateline">Updated September 26, 2026 · Through Game 4</p>
-      <h1>Four games in: Mendoza edges ahead.</h1>
-      <p class="dek">Josh Hoover still owns the stronger yards-per-attempt mark, but Fernando Mendoza’s 2025 pace now leads in completion rate, yards, touchdowns and passer rating. Both Indiana teams started 4–0.</p>
-    </div>
-    <aside class="scoreboard" aria-label="Latest Indiana game result">
-      <span class="label">Big Ten opener · Final</span>
-      <div class="score"><span>Indiana</span><b>29</b></div>
-      <div class="score"><span>Northwestern</span><b>23</b></div>
-      <div class="record">Hoover: 19/29, 201 yards, 1 passing TD, 0 INT · 6 rushes, 1 rushing TD</div>
-    </aside>
-  </header>
-
-  <nav class="jump" aria-label="Report sections">
-    <a href="#comparison">Comparison</a><a href="#game-lines">Game lines</a><a href="#national">National view</a><a href="#heisman">Heisman</a><a href="#sources">Sources</a>
-  </nav>
-
-  <section id="comparison">
-    <div class="section-head">
-      <div><p class="kicker">Head to head</p><h2>The first four</h2></div>
-      <p class="section-copy">Mendoza’s fourth game was a five-touchdown rout of Illinois. Hoover’s was his first one-score test of the season. That difference flips the cumulative comparison after Hoover led most efficiency measures through three.</p>
-    </div>
-    <div class="verdict">
-      <div class="callout"><strong>Mendoza leads 4 of 5 headline passing measures.</strong><p>Hoover remains ahead in yards per attempt, 10.6 to 9.8, and neither quarterback threw an interception in the opening four.</p></div>
-      <div class="game-note"><div class="big">204.6 vs 206.2</div><p>The cumulative passer-rating gap is just 1.6 points despite very different Game 4 performances.</p></div>
-    </div>
-    <div class="stats" aria-label="Four-game cumulative comparison">
-      <article class="stat"><h3>Completion</h3><div class="pair"><div class="mendoza-val"><b>76.8%</b><small>Mendoza</small></div><div class="hoover-val"><b>70.0%</b><small>Hoover</small></div></div></article>
-      <article class="stat"><h3>Pass yards</h3><div class="pair"><div class="mendoza-val"><b>975</b><small>Mendoza</small></div><div class="hoover-val"><b>850</b><small>Hoover</small></div></div></article>
-      <article class="stat"><h3>Pass TD</h3><div class="pair"><div class="mendoza-val"><b>14</b><small>Mendoza</small></div><div class="hoover-val"><b>11</b><small>Hoover</small></div></div></article>
-      <article class="stat"><h3>Passer rating</h3><div class="pair"><div class="mendoza-val"><b>206.2</b><small>Mendoza</small></div><div class="hoover-val"><b>204.6</b><small>Hoover</small></div></div></article>
-      <article class="stat"><h3>Yards / attempt</h3><div class="pair"><div class="mendoza-val"><b>9.8</b><small>Mendoza</small></div><div class="hoover-val"><b>10.6</b><small>Hoover</small></div></div></article>
-    </div>
-    <div class="bar-grid" id="comparison-bars" aria-label="Bar chart comparison"></div>
-  </section>
-
-  <section id="game-lines">
-    <div class="section-head">
-      <div><p class="kicker">Game by game</p><h2>Two very different arcs</h2></div>
-      <p class="section-copy">Hoover opened at elite efficiency, then fell to a 135.1 rating against Northwestern. Mendoza moved the opposite direction, closing this four-game window with 21 completions on 23 attempts and five touchdowns against Illinois.</p>
-    </div>
-    <div class="legend"><span class="m"><i></i>Mendoza ’25</span><span class="h"><i></i>Hoover ’26</span></div>
-    <div class="controls" id="game-controls" aria-label="Choose game chart metric"></div>
-    <div class="chart-shell">
-      <div class="chart-title-row"><h3 id="game-chart-title">Passing yards</h3><span>Per game</span></div>
-      <div id="game-chart"></div>
-    </div>
-    <div class="logs">
-      <article class="log" id="mendoza-log"><h3>Fernando Mendoza · 2025</h3></article>
-      <article class="log hoover" id="hoover-log"><h3>Josh Hoover · 2026</h3></article>
-    </div>
-    <p class="fine" style="margin-top:14px">* Game 4 and four-game cumulative passer ratings are computed with the NCAA formula because the source box scores did not publish them.</p>
-  </section>
-
-  <section id="national">
-    <div class="section-head">
-      <div><p class="kicker">National view</p><h2>Hoover’s standing</h2></div>
-      <p class="section-copy">The published ESPN leaderboard snapshot below covers games through September 19, before Hoover played Northwestern. The trajectory chart then adds Hoover’s Game 4 totals inside the established 14-quarterback comparison pool.</p>
-    </div>
-    <div class="rank-layout">
-      <div>
-        <div class="controls" id="rank-controls" aria-label="Choose rank chart metric"></div>
-        <div class="rank-card">
-          <div class="chart-title-row"><h3 id="rank-chart-title">Passing yards</h3><span>Lower rank is better</span></div>
-          <div id="rank-chart"></div>
-        </div>
-      </div>
-      <aside class="rank-note"><strong>After Game 4, Hoover lands fifth in tracked-pool yards and yards per attempt.</strong><p>He is second in passing touchdowns, fourth in passer rating and fifth in completion percentage within this 14-QB reconstruction. Those are pool ranks—not a claim about the fully refreshed national leaderboard.</p></aside>
-    </div>
-    <h3 style="font-family:Georgia,serif;font-size:1.5rem;margin:34px 0 14px">ESPN leaders before the Northwestern game</h3>
-    <div class="boards" id="leaderboards"></div>
-    <p class="fine" style="margin-top:14px">Snapshot fetched September 26 and reflecting games through September 19. Hoover’s displayed leaderboard values are his three-game totals: 649 yards, 10 TD, 72.5%, 243.9 rating and 12.7 yards per attempt.</p>
-  </section>
-
-  <section id="heisman">
-    <div class="section-head">
-      <div><p class="kicker">Market snapshot</p><h2>Heisman watch</h2></div>
-      <p class="section-copy">Three reported books still had Hoover in the conversation before the Northwestern result, though well behind the co-favorites. These are dated snapshots, not live odds.</p>
-    </div>
-    <div class="odds-wrap">
-      <div class="odds" id="odds-table"></div>
-      <aside class="market-note"><b>+2500</b><p>Hoover at both FanDuel and DraftKings in reports published around September 22. BetMGM’s reported line was +3500 around September 21.</p></aside>
-    </div>
-    <p class="fine" style="margin-top:14px">Hoover’s BetMGM line moved from +1200 at opening to +2000 the prior week and +3500 in this snapshot. No post-Northwestern odds report was available when this page was built.</p>
-  </section>
-
-  <section id="sources" class="source-section">
-    <div class="section-head">
-      <div><p class="kicker">Method & provenance</p><h2>Sources</h2></div>
-      <p class="section-copy">Game logs come from ESPN, with the 2025 Illinois line checked against Indiana’s official box score. National ranks use a 14-QB tracked pool; ties share rank and efficiency categories require 20 attempts.</p>
-    </div>
-    <div class="sources">
-      <a href="https://www.espn.com/college-football/player/_/id/4685401/josh-hoover" target="_blank" rel="noopener">ESPN · Josh Hoover game log ↗</a>
-      <a href="https://www.espn.com/nfl/player/gamelog/_/id/4837248/type/college-football" target="_blank" rel="noopener">ESPN · Fernando Mendoza college game log ↗</a>
-      <a href="http://www.espn.ph/college-football/stats/player" target="_blank" rel="noopener">ESPN · 2026 FBS passing leaders ↗</a>
-      <a href="https://iuhoosiers.com/documents/download/2025/9/21/IU_63__ILL_10_Final_Book.PDF" target="_blank" rel="noopener">Indiana · Illinois 2025 final book ↗</a>
-      <a href="https://fieldlevelmedia.com/betting/ole-miss-trinidad-chambliss-vaults-to-head-of-heisman-trophy-pack/" target="_blank" rel="noopener">Field Level Media · BetMGM odds ↗</a>
-      <a href="https://www.si.com/betting/2026-heisman-trophy-odds-trinidad-chambliss-skyrockets-to-favorite-keelon-russell-kamario-taylor-rising" target="_blank" rel="noopener">Sports Illustrated · FanDuel odds ↗</a>
-      <a href="https://www.nbcsports.com/betting/college-football/news/2026-heisman-trophy-betting-odds-favorites-contenders-future-picks-for-week-4-including-chambliss-mensah" target="_blank" rel="noopener">NBC Sports · DraftKings odds ↗</a>
-    </div>
-    <p class="fine" style="margin-top:22px"><strong>Calculation note:</strong> NCAA passer rating = (8.4 × yards + 330 × TD + 100 × completions − 200 × interceptions) ÷ attempts. Small differences from ESPN season aggregates can occur. National Week 5 values were reconstructed at approximately 2:45 a.m. EDT on September 26; only Hoover had played among the charted quarterbacks.</p>
-  </section>
-  <footer>Indiana quarterback comparison · snapshot dated September 26, 2026</footer>
-</main>
-<script>
-(function(){
-  'use strict';
-  var M='#176b8f', H='#990000';
-  var data={
-    mendoza:[
-      {opp:'Old Dominion',result:'W 27–14',ca:'18/31',yds:193,td:0,int:0,rtg:110.4,pct:58.1,rush:'6–33, 1 TD'},
-      {opp:'Kennesaw State',result:'W 56–9',ca:'18/25',yds:245,td:4,int:0,rtg:207.1,pct:72.0,rush:'3–20'},
-      {opp:'Indiana State',result:'W 73–0',ca:'19/20',yds:270,td:5,int:0,rtg:290.9,pct:95.0,rush:'6–19, 1 TD'},
-      {opp:'Illinois',result:'W 63–10',ca:'21/23',yds:267,td:5,int:0,rtg:260.6,pct:91.3,rush:'7–4'}
-    ],
-    hoover:[
-      {opp:'North Texas',result:'W 52–16',ca:'13/16',yds:231,td:4,int:0,rtg:285.0,pct:81.3,rush:'0–0'},
-      {opp:'Howard',result:'W 55–0',ca:'6/11',yds:145,td:4,int:0,rtg:285.3,pct:54.6,rush:'6–18'},
-      {opp:'Western Kentucky',result:'W 38–0',ca:'18/24',yds:273,td:2,int:0,rtg:198.0,pct:75.0,rush:'2–2'},
-      {opp:'Northwestern',result:'W 29–23',ca:'19/29',yds:201,td:1,int:0,rtg:135.1,pct:65.5,rush:'6–1, 1 TD'}
-    ]
-  };
-  var bars=[['Completion %',76.8,70.0,'%'],['Passing yards',975,850,''],['Passing TD',14,11,''],['Passer rating',206.2,204.6,''],['Yards / attempt',9.8,10.6,''],['Rushing yards',76,21,''],['Interceptions',0,0,'']];
-  document.getElementById('comparison-bars').innerHTML=bars.map(function(x){var max=Math.max(x[1],x[2],1);return '<article class="bar-card"><div class="bar-title"><span>'+x[0]+'</span><span>'+x[1]+x[3]+' · '+x[2]+x[3]+'</span></div><div class="bar-row"><span>Mendoza</span><div class="track"><div class="fill m" style="width:'+(100*x[1]/max)+'%"></div></div><span class="num">'+x[1]+x[3]+'</span></div><div class="bar-row"><span>Hoover</span><div class="track"><div class="fill h" style="width:'+(100*x[2]/max)+'%"></div></div><span class="num">'+x[2]+x[3]+'</span></div></article>'}).join('');
-  function renderLog(id,rows,total){var el=document.getElementById(id);el.innerHTML+=rows.map(function(g,i){return '<div class="game"><div><div class="opp">'+(i+1)+'. '+g.opp+'</div><div class="result">'+g.result+'</div></div><div class="line">'+g.ca+' · '+g.yds+' YDS · '+g.td+' TD · '+g.int+' INT<span class="rush">'+g.rtg.toFixed(1)+' RTG · Rush '+g.rush+'</span></div></div>'}).join('')+'<div class="total"><span>FOUR-GAME TOTAL</span><span>'+total+'</span></div>'}
-  renderLog('mendoza-log',data.mendoza,'76/99 · 975 YDS · 14 TD');
-  renderLog('hoover-log',data.hoover,'56/80 · 850 YDS · 11 TD');
-
-  var gameMetrics={yds:{label:'Passing yards',domain:[100,300],ticks:[100,150,200,250,300],fmt:function(v){return v;}},rtg:{label:'Passer rating',domain:[100,300],ticks:[100,150,200,250,300],fmt:function(v){return v.toFixed(1);}},pct:{label:'Completion percentage',domain:[50,100],ticks:[50,60,70,80,90,100],fmt:function(v){return v.toFixed(1)+'%';}}};
-  function svgLine(metric){var cfg=gameMetrics[metric],w=700,h=330,L=54,R=24,T=24,B=48,iw=w-L-R,ih=h-T-B;function x(i){return L+i*iw/3}function y(v){return T+(cfg.domain[1]-v)*ih/(cfg.domain[1]-cfg.domain[0])}var out=['<svg class="chart" viewBox="0 0 700 330" role="img" aria-label="'+cfg.label+' by game for Mendoza and Hoover">'];cfg.ticks.forEach(function(t){out.push('<line class="gridline" x1="'+L+'" x2="'+(w-R)+'" y1="'+y(t)+'" y2="'+y(t)+'"/><text class="axistext" x="'+(L-10)+'" y="'+(y(t)+4)+'" text-anchor="end">'+t+'</text>')});[0,1,2,3].forEach(function(i){out.push('<text class="axistext" x="'+x(i)+'" y="'+(h-16)+'" text-anchor="middle">GAME '+(i+1)+'</text>')});[['mendoza','m'],['hoover','h']].forEach(function(s){var rows=data[s[0]],pts=rows.map(function(g,i){return x(i)+','+y(g[metric])}).join(' ');out.push('<polyline class="series-'+s[1]+'" points="'+pts+'" fill="none" stroke-width="4"/>');rows.forEach(function(g,i){var yy=y(g[metric]),dy=yy<T+20?22:-13;out.push('<circle class="series-'+s[1]+'" cx="'+x(i)+'" cy="'+yy+'" r="6"/><text class="labeltext" x="'+x(i)+'" y="'+(yy+dy)+'" text-anchor="middle">'+cfg.fmt(g[metric])+'</text>')})});out.push('</svg>');return out.join('')}
-  var gameControls=document.getElementById('game-controls');Object.keys(gameMetrics).forEach(function(k,i){var b=document.createElement('button');b.textContent=gameMetrics[k].label;b.setAttribute('aria-pressed',i===0?'true':'false');b.onclick=function(){Array.from(gameControls.children).forEach(function(q){q.setAttribute('aria-pressed','false')});b.setAttribute('aria-pressed','true');document.getElementById('game-chart-title').textContent=gameMetrics[k].label;document.getElementById('game-chart').innerHTML=svgLine(k)};gameControls.appendChild(b)});document.getElementById('game-chart').innerHTML=svgLine('yds');
-
-  var rankData={
-    yards:{label:'Passing yards',max:13,series:[['Maiava',[1,1,1,1,1]],['Atkinson',[null,5,3,2,2]],['Stokes',[3,3,2,3,3]],['Weaver',[2,2,4,4,4]],['Hoover',[null,10,13,11,5]]]},
-    tds:{label:'Passing touchdowns',max:8,series:[['Maiava',[1,1,1,1,1]],['Mensah',[null,1,3,2,2]],['Taylor',[null,5,8,2,2]],['Hoover',[null,5,3,4,2]],['Hejny',[null,1,2,4,5]]]},
-    pct:{label:'Completion percentage',max:9,series:[['Mensah',[null,1,1,1,1]],['Stockton',[null,null,2,2,2]],['Fifita',[null,4,8,3,3]],['Broughton',[null,3,3,4,4]],['Hoover',[null,null,9,8,5]]]},
-    rating:{label:'Passer rating',max:8,series:[['Stockton',[null,null,2,1,1]],['Hoover',[null,null,1,2,4]],['Mensah',[null,1,3,3,2]],['Becht',[null,null,5,4,3]],['Taylor',[null,4,8,5,5]]]},
-    ya:{label:'Yards per attempt',max:7,series:[['Stockton',[null,null,4,1,1]],['Hoover',[null,null,3,2,5]],['Becht',[null,null,7,3,2]],['Jennings',[null,null,1,4,3]],['Philo',[null,2,5,5,4]]]}
-  };
-  var palette=['#80847e','#c48328','#3d8d68','#7e6ba1','#176b8f'];
-  function rankSVG(key){var d=rankData[key],w=700,h=350,L=50,R=22,T=28,B=62,iw=w-L-R,ih=h-T-B;function x(i){return L+i*iw/4}function y(v){return T+(v-1)*ih/(d.max-1)}var out=['<svg class="chart" viewBox="0 0 700 350" role="img" aria-label="Weekly '+d.label+' rank trajectory">'];for(var r=1;r<=d.max;r+=2){out.push('<line class="gridline" x1="'+L+'" x2="'+(w-R)+'" y1="'+y(r)+'" y2="'+y(r)+'"/><text class="axistext" x="'+(L-9)+'" y="'+(y(r)+4)+'" text-anchor="end">#'+r+'</text>')}['AUG 29','SEP 5','SEP 12','SEP 19','SEP 26'].forEach(function(t,i){out.push('<text class="axistext" x="'+x(i)+'" y="'+(h-20)+'" text-anchor="middle">'+t+'</text>')});d.series.forEach(function(s,si){var isH=s[0]==='Hoover',segments=[],current=[];s[1].forEach(function(v,i){if(v===null){if(current.length){segments.push(current);current=[]}}else current.push([x(i),y(v),v])});if(current.length)segments.push(current);segments.forEach(function(seg){out.push('<polyline points="'+seg.map(function(p){return p[0]+','+p[1]}).join(' ')+'" fill="none" stroke="'+(isH?'var(--iu)':palette[si])+'" stroke-width="'+(isH?5:2.5)+'"/>')});s[1].forEach(function(v,i){if(v===null)return;out.push('<circle cx="'+x(i)+'" cy="'+y(v)+'" r="'+(isH?6:4)+'" fill="'+(isH?'var(--iu)':palette[si])+'"/>'+(isH?'<text class="labeltext" x="'+x(i)+'" y="'+(y(v)-11)+'" text-anchor="middle">#'+v+'</text>':''))})});out.push('</svg><div class="legend">'+d.series.map(function(s,si){return '<span style="color:'+(s[0]==='Hoover'?'var(--iu)':palette[si])+'"><i></i>'+s[0]+'</span>'}).join('')+'</div>');return out.join('')}
-  var rc=document.getElementById('rank-controls');Object.keys(rankData).forEach(function(k,i){var b=document.createElement('button');b.textContent=rankData[k].label;b.setAttribute('aria-pressed',i===0?'true':'false');b.onclick=function(){Array.from(rc.children).forEach(function(q){q.setAttribute('aria-pressed','false')});b.setAttribute('aria-pressed','true');document.getElementById('rank-chart-title').textContent=rankData[k].label;document.getElementById('rank-chart').innerHTML=rankSVG(k)};rc.appendChild(b)});document.getElementById('rank-chart').innerHTML=rankSVG('yards');
-
-  var boards=[
-    {title:'Passing yards',rows:[['1','Jayden Maiava','1,173'],['2','Braden Atkinson','1,120'],['3','Marcus Stokes','1,053'],['4','Deuce Bailey','1,039'],['5','Luke Weaver','1,032'],['50+','Josh Hoover','649']]},
-    {title:'Passing TD',rows:[['1','Jayden Maiava','12'],['T-2','Darian Mensah','11'],['T-2','Kamario Taylor','11'],['T-4','Josh Hoover','10'],['T-4','Hauss Hejny','10'],['T-4','Deuce Bailey','10']]},
-    {title:'Completion %',rows:[['1','Darian Mensah','89.9%'],['2','Gunner Stockton','84.4%'],['3','Noah Fifita','81.1%'],['4','Cibastian Broughton','80.3%'],['5','Ethan Grunkemeyer','78.2%'],['18','Josh Hoover','72.5%']]},
-    {title:'Passer rating',rows:[['1','Gunner Stockton','259.6'],['2','Josh Hoover','243.9'],['3','Darian Mensah','229.1'],['4','Rocco Becht','215.0'],['5','Kamario Taylor','195.0']]},
-    {title:'Yards / attempt',rows:[['1','Gunner Stockton','13.0'],['2','Josh Hoover','12.7'],['3','Rocco Becht','11.7'],['4','Kevin Jennings','11.4'],['5','Aaron Philo','11.3']]}
-  ];
-  document.getElementById('leaderboards').innerHTML=boards.map(function(b){return '<article class="board"><h3>'+b.title+'</h3>'+b.rows.map(function(r){return '<div class="leader '+(r[1]==='Josh Hoover'?'hoover':'')+'"><span class="rank">'+r[0]+'</span><span>'+r[1]+'</span><span class="val">'+r[2]+'</span></div>'}).join('')+'</article>'}).join('');
-  var odds=[['Darian Mensah','+325','+390','+370'],['Trinidad Chambliss','+325','+310','+310'],['Jeremiah Smith','+1000','+950','+1050'],['Kamario Taylor','+1000','+1100','+1100'],['Arch Manning','+1000','+1200','+1400'],['Malachi Toney','+1000','+1200','+1300'],['CJ Carr','+1500','+1200','+1500'],['Josh Hoover','+3500','+2500','+2500'],['Julian Sayin','+3000','—','+2700']];
-  document.getElementById('odds-table').innerHTML='<div class="odds-head"><div>Contender</div><div>BetMGM</div><div>FanDuel</div><div>DraftKings</div></div>'+odds.map(function(r){return '<div class="odds-row '+(r[0]==='Josh Hoover'?'hoover':'')+'"><div>'+r[0]+'</div><div>'+r[1]+'</div><div>'+r[2]+'</div><div>'+r[3]+'</div></div>'}).join('');
-})();
-</script>
-</body>
-</html>
+<style>
+.qbwrap { box-sizing: border-box; max-width: 640px; margin: 0 auto; padding: 16px; font-family: -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; color: var(--hatch-widget-text); background: var(--hatch-widget-bg); }
+.qbwrap h2 { margin: 0 0 2px; font-size: 20px; }
+.qbwrap .sub { margin: 0 0 12px; font-size: 13px; color: var(--hatch-widget-muted); }
+.legend { display: flex; gap: 16px; margin-bottom: 14px; font-size: 13px; }
+.swatch { display: inline-block; width: 12px; height: 12px; border-radius: 3px; margin-right: 6px; vertical-align: -1px; }
+.mcol { background: #1f77b4; }
+.hcol { background: #990000; }
+.metric { margin-bottom: 12px; }
+.metric .mlabel { display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 5px; }
+.metric .mlabel .vals { color: var(--hatch-widget-muted); }
+.bar-row { display: flex; align-items: center; gap: 8px; margin-bottom: 4px; }
+.bar-row .who { width: 92px; flex: none; font-size: 12px; color: var(--hatch-widget-muted); }
+.bar-track { flex: 1; height: 14px; border-radius: 7px; background: var(--hatch-widget-surface-muted); overflow: hidden; }
+.bar-fill { height: 100%; border-radius: 7px; }
+.bar-row .v { width: 56px; flex: none; font-size: 12px; text-align: right; font-variant-numeric: tabular-nums; }
+table.games { width: 100%; border-collapse: collapse; font-size: 12px; margin: 6px 0 16px; }
+table.games caption { text-align: left; font-weight: 700; font-size: 14px; padding: 10px 0 6px; }
+table.games th, table.games td { padding: 6px 6px; border-bottom: 1px solid var(--hatch-widget-border); text-align: right; font-variant-numeric: tabular-nums; }
+table.games th:first-child, table.games td:first-child { text-align: left; }
+table.games tr.total td { font-weight: 700; border-bottom: none; border-top: 2px solid var(--hatch-widget-border); }
+.sec-head { font-size: 16px; font-weight: 700; margin: 20px 0 2px; }
+.sec-sub { font-size: 12px; color: var(--hatch-widget-muted); margin: 0 0 6px; line-height: 1.5; }
+table.leaders { width: 100%; border-collapse: collapse; font-size: 12px; margin: 4px 0 10px; }
+table.leaders caption { text-align: left; font-weight: 700; font-size: 14px; padding: 10px 0 6px; }
+table.leaders caption .hrank { font-weight: 400; font-size: 12px; color: var(--hatch-widget-muted); }
+table.leaders th, table.leaders td { padding: 6px 6px; border-bottom: 1px solid var(--hatch-widget-border); text-align: left; font-variant-numeric: tabular-nums; }
+table.leaders th.val, table.leaders td.val { text-align: right; }
+table.leaders th.rk, table.leaders td.rk { width: 30px; color: var(--hatch-widget-muted); }
+table.leaders tr.hoover td { font-weight: 700; background: rgba(153,0,0,.16); }
+table.heisman { width: 100%; border-collapse: collapse; font-size: 12px; margin: 4px 0 10px; }
+table.heisman caption { text-align: left; font-weight: 700; font-size: 14px; padding: 10px 0 6px; }
+table.heisman th, table.heisman td { padding: 6px 6px; border-bottom: 1px solid var(--hatch-widget-border); text-align: right; font-variant-numeric: tabular-nums; }
+table.heisman th:first-child, table.heisman td:first-child { text-align: left; }
+table.heisman tr.hoover td { font-weight: 700; background: rgba(153,0,0,.16); }
+.qbwrap .note { font-size: 12px; color: var(--hatch-widget-muted); margin-top: 12px; line-height: 1.5; }
+.qbwrap a { color: var(--hatch-widget-accent); }
+</style>
+<div class="qbwrap">
+  <h2>Indiana Hoosiers &mdash; First 4 Games</h2>
+  <p class="sub">Fernando Mendoza (2025) vs Josh Hoover (2026) &middot; both teams started 4&ndash;0</p>
+  <div class="legend">
+    <span><span class="swatch mcol"></span>Mendoza &rsquo;25</span>
+    <span><span class="swatch hcol"></span>Hoover &rsquo;26</span>
+  </div>
+<div class="metric">
+    <div class="mlabel"><span>Completion %</span><span class="vals">76.8% &middot; 70.0%</span></div>
+    <div class="bar-row"><span class="who">Mendoza &rsquo;25</span><div class="bar-track"><div class="bar-fill mcol" style="width:100.0%"></div></div><span class="v">76.8%</span></div>
+    <div class="bar-row"><span class="who">Hoover &rsquo;26</span><div class="bar-track"><div class="bar-fill hcol" style="width:91.2%"></div></div><span class="v">70.0%</span></div>
+  </div>
+<div class="metric">
+    <div class="mlabel"><span>Passing Yards</span><span class="vals">975 &middot; 850</span></div>
+    <div class="bar-row"><span class="who">Mendoza &rsquo;25</span><div class="bar-track"><div class="bar-fill mcol" style="width:100.0%"></div></div><span class="v">975</span></div>
+    <div class="bar-row"><span class="who">Hoover &rsquo;26</span><div class="bar-track"><div class="bar-fill hcol" style="width:87.2%"></div></div><span class="v">850</span></div>
+  </div>
+<div class="metric">
+    <div class="mlabel"><span>Passing TD</span><span class="vals">14 &middot; 11</span></div>
+    <div class="bar-row"><span class="who">Mendoza &rsquo;25</span><div class="bar-track"><div class="bar-fill mcol" style="width:100.0%"></div></div><span class="v">14</span></div>
+    <div class="bar-row"><span class="who">Hoover &rsquo;26</span><div class="bar-track"><div class="bar-fill hcol" style="width:78.6%"></div></div><span class="v">11</span></div>
+  </div>
+<div class="metric">
+    <div class="mlabel"><span>Passer Rating</span><span class="vals">206.2 &middot; 204.6</span></div>
+    <div class="bar-row"><span class="who">Mendoza &rsquo;25</span><div class="bar-track"><div class="bar-fill mcol" style="width:100.0%"></div></div><span class="v">206.2</span></div>
+    <div class="bar-row"><span class="who">Hoover &rsquo;26</span><div class="bar-track"><div class="bar-fill hcol" style="width:99.3%"></div></div><span class="v">204.6</span></div>
+  </div>
+<div class="metric">
+    <div class="mlabel"><span>Yards / Attempt</span><span class="vals">9.8 &middot; 10.6</span></div>
+    <div class="bar-row"><span class="who">Mendoza &rsquo;25</span><div class="bar-track"><div class="bar-fill mcol" style="width:92.7%"></div></div><span class="v">9.8</span></div>
+    <div class="bar-row"><span class="who">Hoover &rsquo;26</span><div class="bar-track"><div class="bar-fill hcol" style="width:100.0%"></div></div><span class="v">10.6</span></div>
+  </div>
+<div class="metric">
+    <div class="mlabel"><span>Rushing Yards</span><span class="vals">76 &middot; 21</span></div>
+    <div class="bar-row"><span class="who">Mendoza &rsquo;25</span><div class="bar-track"><div class="bar-fill mcol" style="width:100.0%"></div></div><span class="v">76</span></div>
+    <div class="bar-row"><span class="who">Hoover &rsquo;26</span><div class="bar-track"><div class="bar-fill hcol" style="width:27.6%"></div></div><span class="v">21</span></div>
+  </div>
+<div class="metric">
+    <div class="mlabel"><span>Interceptions</span><span class="vals">0 &middot; 0</span></div>
+    <div class="bar-row"><span class="who">Mendoza &rsquo;25</span><div class="bar-track"><div class="bar-fill mcol" style="width:0.0%"></div></div><span class="v">0</span></div>
+    <div class="bar-row"><span class="who">Hoover &rsquo;26</span><div class="bar-track"><div class="bar-fill hcol" style="width:0.0%"></div></div><span class="v">0</span></div>
+  </div>
+<table class="games">
+    <caption>Mendoza &rsquo;25 &mdash; game by game</caption>
+    <tr><th>Opponent</th><th>Result</th><th>C/A</th><th>Yds</th><th>TD</th><th>Int</th><th>Rtg</th><th>Rush</th></tr>
+    <tr><td>Old Dominion</td><td>W 27-14</td><td>18/31</td><td>193</td><td>0</td><td>0</td><td>110.4</td><td>6-33, 1 TD</td></tr>
+    <tr><td>Kennesaw St</td><td>W 56-9</td><td>18/25</td><td>245</td><td>4</td><td>0</td><td>207.1</td><td>3-20</td></tr>
+    <tr><td>Indiana St</td><td>W 73-0</td><td>19/20</td><td>270</td><td>5</td><td>0</td><td>290.9</td><td>6-19, 1 TD</td></tr>
+    <tr><td>Illinois</td><td>W 63-10</td><td>21/23</td><td>267</td><td>5</td><td>0</td><td>260.6*</td><td>7-4</td></tr>
+    <tr class="total"><td>Total</td><td>4-0</td><td>76/99</td><td>975</td><td>14</td><td>0</td><td>206.2*</td><td>22-76, 2 TD</td></tr>
+  </table>
+<table class="games">
+    <caption>Hoover &rsquo;26 &mdash; game by game</caption>
+    <tr><th>Opponent</th><th>Result</th><th>C/A</th><th>Yds</th><th>TD</th><th>Int</th><th>Rtg</th><th>Rush</th></tr>
+    <tr><td>North Texas</td><td>W 52-16</td><td>13/16</td><td>231</td><td>4</td><td>0</td><td>285.0</td><td>0-0</td></tr>
+    <tr><td>Howard</td><td>W 55-0</td><td>6/11</td><td>145</td><td>4</td><td>0</td><td>285.3</td><td>6-18</td></tr>
+    <tr><td>W. Kentucky</td><td>W 38-0</td><td>18/24</td><td>273</td><td>2</td><td>0</td><td>198.0</td><td>2-2</td></tr>
+    <tr><td>Northwestern</td><td>W 29-23</td><td>19/29</td><td>201</td><td>1</td><td>0</td><td>135.1*</td><td>6-1, 1 TD</td></tr>
+    <tr class="total"><td>Total</td><td>4-0</td><td>56/80</td><td>850</td><td>11</td><td>0</td><td>204.6*</td><td>14-21, 1 TD</td></tr>
+  </table>
+  <p class="note">* Game-4 and cumulative passer ratings computed locally with the NCAA formula; not published by ESPN or the official box scores.</p>
+  <div class="sec-head">Hoover vs the nation&rsquo;s top 5</div>
+  <p class="sec-sub">2026 FBS passing leaders snapshot via ESPN (fetched Sept 29, reflecting games through Sept 26). Hoover's 4-game totals (11 TD, 850 yds, 70.0%, 204.4 rtg*, 10.6 Y/A) are now on ESPN's board — his ranks below are the verified current ones.</p>
+<table class="leaders">
+    <caption>Passing yards <span class="hrank">&mdash; Hoover: 850 (T-63rd)</span></caption>
+    <tr><th class="rk">Rk</th><th>Player</th><th class="val">Yds</th></tr>
+    <tr><td class="rk">1</td><td>Jayden Maiava (USC)</td><td class="val">1,499</td></tr>
+    <tr><td class="rk">2</td><td>Kevin Jennings (SMU)</td><td class="val">1,453</td></tr>
+    <tr><td class="rk">3</td><td>Braden Atkinson (Oregon St)</td><td class="val">1,421</td></tr>
+    <tr><td class="rk">4</td><td>Drew Mestemaker (Oklahoma St)</td><td class="val">1,271</td></tr>
+    <tr><td class="rk">5</td><td>Trinidad Chambliss (Ole Miss)</td><td class="val">1,222</td></tr>
+    <tr class="hoover"><td class="rk">T-63</td><td>Josh Hoover (Indiana) &#9733;</td><td class="val">850</td></tr>
+  </table>
+<table class="leaders">
+    <caption>Passing TD <span class="hrank">&mdash; Hoover: 11 (T-7th)</span></caption>
+    <tr><th class="rk">Rk</th><th>Player</th><th class="val">TD</th></tr>
+    <tr><td class="rk">T-1</td><td>Jayden Maiava (USC)</td><td class="val">14</td></tr>
+    <tr><td class="rk">T-1</td><td>Darian Mensah (Miami)</td><td class="val">14</td></tr>
+    <tr><td class="rk">T-1</td><td>Kamario Taylor (Mississippi St)</td><td class="val">14</td></tr>
+    <tr><td class="rk">4</td><td>Mason Heintschel (Pittsburgh)</td><td class="val">13</td></tr>
+    <tr><td class="rk">T-5</td><td>John Alan Richter (Toledo)</td><td class="val">12</td></tr>
+    <tr><td class="rk">T-5</td><td>Kevin Jennings (SMU)</td><td class="val">12</td></tr>
+    <tr class="hoover"><td class="rk">T-7</td><td>Josh Hoover (Indiana) &#9733;</td><td class="val">11</td></tr>
+  </table>
+<table class="leaders">
+    <caption>Completion % <span class="hrank">&mdash; Hoover: 70.0% (T-28th)</span></caption>
+    <tr><th class="rk">Rk</th><th>Player</th><th class="val">Pct</th></tr>
+    <tr><td class="rk">1</td><td>Darian Mensah (Miami)</td><td class="val">88.7%</td></tr>
+    <tr><td class="rk">T-2</td><td>Dylan Raiola (Oregon)</td><td class="val">83.3%</td></tr>
+    <tr><td class="rk">T-2</td><td>Cibastian Broughton (Akron)</td><td class="val">80.3%</td></tr>
+    <tr><td class="rk">3</td><td>Kevin Jennings (SMU)</td><td class="val">77.0%</td></tr>
+    <tr><td class="rk">4</td><td>Beau Pribula (Virginia)</td><td class="val">76.7%</td></tr>
+    <tr><td class="rk">5</td><td>Noah Fifita (Arizona)</td><td class="val">75.6%</td></tr>
+    <tr class="hoover"><td class="rk">T-28</td><td>Josh Hoover (Indiana) &#9733;</td><td class="val">70.0%</td></tr>
+  </table>
+<table class="leaders">
+    <caption>Passer rating <span class="hrank">&mdash; Hoover: 204.4 (4th nationally)</span></caption>
+    <tr><th class="rk">Rk</th><th>Player</th><th class="val">Rtg</th></tr>
+    <tr><td class="rk">1</td><td>Darian Mensah (Miami)</td><td class="val">228.0</td></tr>
+    <tr><td class="rk">2</td><td>Dylan Raiola (Oregon)</td><td class="val">225.7</td></tr>
+    <tr><td class="rk">3</td><td>Gunner Stockton (Georgia)</td><td class="val">209.4</td></tr>
+    <tr class="hoover"><td class="rk">4</td><td>Josh Hoover (Indiana) &#9733;</td><td class="val">204.4</td></tr>
+    <tr><td class="rk">5</td><td>Kevin Jennings (SMU)</td><td class="val">197.0</td></tr>
+  </table>
+<table class="leaders">
+    <caption>Yards / attempt <span class="hrank">&mdash; Hoover: 10.6 (7th)</span></caption>
+    <tr><th class="rk">Rk</th><th>Player</th><th class="val">Y/A</th></tr>
+    <tr><td class="rk">T-1</td><td>Dylan Raiola (Oregon)</td><td class="val">11.5</td></tr>
+    <tr><td class="rk">T-1</td><td>Kevin Jennings (SMU)</td><td class="val">11.5</td></tr>
+    <tr><td class="rk">2</td><td>Darian Mensah (Miami)</td><td class="val">11.4</td></tr>
+    <tr><td class="rk">3</td><td>David McComb (Miami (OH))</td><td class="val">10.9</td></tr>
+    <tr><td class="rk">T-4</td><td>Gunner Stockton (Georgia)</td><td class="val">10.8</td></tr>
+    <tr><td class="rk">T-4</td><td>Aidan Chiles (Nebraska)</td><td class="val">10.8</td></tr>
+    <tr class="hoover"><td class="rk">7</td><td>Josh Hoover (Indiana) &#9733;</td><td class="val">10.6</td></tr>
+  </table>
+  <div class="sec-head">Heisman Watch</div>
+  <p class="sec-sub">Verified odds: BetMGM via Reuters/Field Level Media (Sept 28), FanDuel via Sports Illustrated (Sept 27), DraftKings via NBC Sports (Sept 28).</p>
+  <table class="heisman">
+    <caption>Heisman Trophy odds &mdash; verified reports</caption>
+    <tr><th>Contender</th><th>BetMGM</th><th>FanDuel</th><th>DraftKings</th></tr>
+    <tr><td>CJ Carr</td><td>+1200</td><td>+1200</td><td>+1150</td></tr>
+    <tr><td>Darian Mensah (Miami)</td><td>+450</td><td>+440</td><td>+380</td></tr>
+    <tr><td>Jadan Baugh (Florida)</td><td>+1000</td><td>+1200</td><td>+1100</td></tr>
+    <tr><td>Jeremiah Smith (Ohio St)</td><td>+250</td><td>+290</td><td>+260</td></tr>
+    <tr class="hoover"><td>Josh Hoover (Indiana) &#9733;</td><td>+2500</td><td>+5000</td><td>+4600</td></tr>
+    <tr><td>Kamario Taylor (Mississippi St)</td><td>+600</td><td>+550</td><td>+500</td></tr>
+    <tr><td>Malachi Toney (Miami)</td><td>+1500</td><td>+2200</td><td>+1900</td></tr>
+    <tr><td>Trinidad Chambliss (Ole Miss)</td><td>+1100</td><td>+1100</td><td>+1200</td></tr>
+  </table>
+  <p class="note">New favorite: Jeremiah Smith (Ohio St) after his 4-TD game &mdash; +250 BetMGM, +290 FanDuel, +260 DraftKings. Last week's co-favorites slipped: Darian Mensah to 2nd (+450/+440/+380), Trinidad Chambliss to 5th (+1100/+1100/+1200). Hoover's line split: BetMGM shortened to +2500 (T-8th, with Arch Manning and Keelon Russell) from +3500, but FanDuel doubled to +5000 (T-13th) from +2500 and DraftKings nearly doubled to +4600 from +2500.</p>
+  <div class="sec-head">Data gaps &amp; caveats</div>
+  <p class="note">ESPN's leaderboard now reflects games through Sept 26 (fetched Sept 29; ESPN updates nightly): Hoover's 4-game totals are on the board, so his ranks are the verified current ones — T-63rd in yards, T-7th in TDs, T-28th in completion %, 4th in passer rating, 7th in yards/attempt. *ESPN's published rating for Hoover is 204.4 (locally computed 204.6). ESPN's RTG-sorted leaderboard displays an anomalous rank column (Raiola and Stockton both shown as &quot;2&quot;, Hoover as &quot;3&quot;, Jennings as &quot;14&quot;); the by-value ordering is unambiguous and is used here. Braden Atkinson's ESPN gamelog rows sum to 1,423 yds but the page's total row displays 1,421 — a 2-yard ESPN-side discrepancy; per-game rows were used. Cibastian Broughton appeared vs UNLV (L 38-10) but recorded 0 pass attempts. Hejny, Weaver, and Stokes had no Week-5 game (bye; inferred from absent 9/26 gamelog rows). Per-game passer ratings and yards/attempt for the national QBs are computed locally from ESPN gamelogs; tiny deltas vs ESPN season aggregates are expected. No CAPTCHAs encountered.</p>
+  <p class="note">Sources: <a href="https://www.espn.com/college-football/player/_/id/4685401/josh-hoover">ESPN &mdash; Josh Hoover 2026 game log</a>, <a href="https://www.espn.com/nfl/player/gamelog/_/id/4837248/type/college-football">ESPN &mdash; Fernando Mendoza 2025 game log</a>, <a href="http://www.espn.ph/college-football/stats/player">ESPN &mdash; 2026 FBS passing leaders</a>, <a href="https://iuhoosiers.com/documents/download/2025/9/21/IU_63__ILL_10_Final_Book.PDF">IU official box score &mdash; Illinois 2025</a>, <a href="https://www.reuters.com/sports/buckeyes-jeremiah-smith-new-heisman-favorite-after-4-td-game--flm-2026-09-28/">Reuters/Field Level Media &mdash; Heisman odds (BetMGM)</a>, <a href="https://www.si.com/betting/2026-heisman-trophy-odds-jeremiah-smith-skyrockets-to-favorite-kamario-taylor-still-rising">SI &mdash; Heisman odds (FanDuel)</a>, <a href="https://www.nbcsports.com/betting/college-football/news/heisman-trophy-betting-odds-favorites-contenders-future-picks-for-week-5-including-smith-baugh-taylor">NBC Sports &mdash; Heisman odds (DraftKings)</a>.</p>
+</div>
